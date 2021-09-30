@@ -201,3 +201,6 @@ for i,v in pairs(getconnections(game.Players.LocalPlayer.Idled)) do --anti afk
         end
     end)
 end
+
+game:GetService("RunService"):Set3dRenderingEnabled(false)
+setfpscap(10)
