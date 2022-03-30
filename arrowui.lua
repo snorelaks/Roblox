@@ -252,6 +252,7 @@ end
 
 function Library:PlaceUI()
     local current_y = _G["Theme"]["UI_Position"].Y
+    print(current_y)
     for i = 1, #_G["Layout"] do
         local v = _G["Layout"][i]
         if active then
@@ -354,6 +355,8 @@ function Library:PlaceUI()
         end
         if v["Hide"] == false then
             current_y = current_y + v["Drawings"]["Main"].Size.Y
+        else
+            current_y = current_y
         end
     end
 end
