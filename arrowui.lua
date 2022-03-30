@@ -370,7 +370,7 @@ function Library:Reset()
                 t2.Position = v2(newpos.X+margin+t2.TextBounds.X/2, newpos.Y+margin)
             elseif v["Type"] == "Keybind" then
                 local current = string.sub(tostring(v["Keybind"]), 14, #tostring(v["Keybind"]))
-                v["Drawings"]["Extra"]["Text"].Text = current
+                v["Drawings"]["Extra"]["Text"].Text = "<"..current..">"
 
                 local newpos = v["Drawings"]["Extra"]["Main"].Position
                 local margin = 2
@@ -407,7 +407,7 @@ function Library:Reset()
                 t2.Position = v2(newpos.X+margin+t2.TextBounds.X/2, newpos.Y+margin)
             elseif v["Type"] == "Keybind" then
                 local current = string.sub(tostring(v["Keybind"]), 14, #tostring(v["Keybind"]))
-                v["Drawings"]["Extra"]["Text"].Text = current
+                v["Drawings"]["Extra"]["Text"].Text = "<"..current..">"
 
                 local newpos = v["Drawings"]["Extra"]["Main"].Position
                 local margin = 2
@@ -577,21 +577,22 @@ c = UIS.InputBegan:Connect(function(input, processed)
                             end
                             v["Drawings"]["Extra"]["Text"].Text = replace
                             local oldbind = v["Keybind"]
-                            v["Keybind"] = "             <...>"
+                            v["Keybind"] = "             ..."
                             Library:Reset()
                             local c
-                            c = UIS.InputBegan:Connect(function(input2)
+                            c = UIS.InputBegan:Connect(function(input2, processed)
                                 if DESTROY_GUI then
                                     c:Disconnect()
                                 elseif input2.UserInputType == Enum.UserInputType.Keyboard then
-                                    if input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right then
+                                    if not processed or (input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right) then
                                         v["Keybind"] = input2.KeyCode
-                                        v["CallBack"](input2.KeyCode)
+                                        --v["CallBack"](input2.KeyCode)
+                                        v["ChangeTime"] = tick()
                                         Library:Reset()
                                         c:Disconnect()
                                     else
                                         v["Keybind"] = oldbind
-                                        v["CallBack"](oldbind)
+                                        --v["CallBack"](oldbind)
                                         Library:Reset()
                                         c:Disconnect()
                                     end
@@ -730,7 +731,7 @@ function Library:NewCategory(cat_name)
             if DESTROY_GUI then
                 c:Disconnect()
             elseif not processed or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
-                if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == _G["Layout"][val]["Keybind"] then
+                if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == _G["Layout"][val]["Keybind"] and (tick() - _G["Layout"][val]["ChangeTime"]) > 0.01 then
                     CallBack()
                 end
             end
