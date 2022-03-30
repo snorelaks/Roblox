@@ -1,3 +1,19 @@
+--[[
+
+Credit to original creator
+This is a modified version 
+
+CHANGES:
+[+] When moving through menu, skips "Categories"
+[+] Displays "<...>" when changing keybind
+[+] Unwanted movement in UI when toggled (you could use arrow keys to enable/disable & move in ui when closed)
+[+] Removed unwanted callback when using keybind
+
+KNOWN ISSUES:
+[*] Calling twice gives unknown error
+[*] Movement in menu while chatting
+
+]]--
 for i,v in pairs(_G) do
     if tostring(i) == "Layout" and #v ~= 0 then
         return
