@@ -426,7 +426,7 @@ local c
 c = UIS.InputBegan:Connect(function(input, processed)
     if not processed or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
         if input.UserInputType == Enum.UserInputType.Keyboard then
-            if input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.P then
+            if input.KeyCode == Enum.KeyCode.Up then
                 selected = clamp(selected - 1, 1, n-1)
                 print(selected)
                 if selected == 1 then
@@ -453,7 +453,7 @@ c = UIS.InputBegan:Connect(function(input, processed)
                 end
                 Library:Reset()
             end
-            if input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.L then
+            if input.KeyCode == Enum.KeyCode.Left then
                 n = #_G["Layout"]
                 for i = 1, n do
                     local v = _G["Layout"][i]
@@ -499,7 +499,7 @@ c = UIS.InputBegan:Connect(function(input, processed)
                     end
                 end
             end
-            if input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Semicolon then
+            if input.KeyCode == Enum.KeyCode.Down then
                 selected = clamp(selected + 1, 1, n+1)
                 if selected == n+1 then
                     local found = false
@@ -525,7 +525,7 @@ c = UIS.InputBegan:Connect(function(input, processed)
                 end
                 Library:Reset()
             end
-            if input.KeyCode == Enum.KeyCode.Right or input.KeyCode == Enum.KeyCode.Quote then
+            if input.KeyCode == Enum.KeyCode.Right then
                 n = #_G["Layout"]
                 for i = 1, n do
                     local v = _G["Layout"][i]
@@ -576,15 +576,25 @@ c = UIS.InputBegan:Connect(function(input, processed)
                                 replace = replace .. "_"
                             end
                             v["Drawings"]["Extra"]["Text"].Text = replace
+                            local oldbind = v["Keybind"]
+                            v["Keybind"] = "             <...>"
+                            Library:Reset()
                             local c
                             c = UIS.InputBegan:Connect(function(input2)
                                 if DESTROY_GUI then
                                     c:Disconnect()
                                 elseif input2.UserInputType == Enum.UserInputType.Keyboard then
-                                    v["Keybind"] = input2.KeyCode
-                                    v["CallBack"](input2.KeyCode)
-                                    Library:Reset()
-                                    c:Disconnect()
+                                    if input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right then
+                                        v["Keybind"] = input2.KeyCode
+                                        v["CallBack"](input2.KeyCode)
+                                        Library:Reset()
+                                        c:Disconnect()
+                                    else
+                                        v["Keybind"] = oldbind
+                                        v["CallBack"](oldbind)
+                                        Library:Reset()
+                                        c:Disconnect()
+                                    end
                                 end
                             end)
                         end
