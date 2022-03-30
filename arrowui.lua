@@ -423,8 +423,8 @@ end
 Library:Reset()
 local UIS = game:GetService("UserInputService")
 local c
-c = UIS.InputBegan:Connect(function(input, processed)
-    if not processed or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
+c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
+    if active and (not gameProcessedEvent or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right)) then
         if input.UserInputType == Enum.UserInputType.Keyboard then
             if input.KeyCode == Enum.KeyCode.Up then
                 selected = clamp(selected - 1, 1, n-1)
@@ -580,11 +580,11 @@ c = UIS.InputBegan:Connect(function(input, processed)
                             v["Keybind"] = "             ..."
                             Library:Reset()
                             local c
-                            c = UIS.InputBegan:Connect(function(input2, processed)
+                            c = UIS.InputBegan:Connect(function(input2, gameProcessedEvent)
                                 if DESTROY_GUI then
                                     c:Disconnect()
                                 elseif input2.UserInputType == Enum.UserInputType.Keyboard then
-                                    if not processed or (input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right) then
+                                    if not gameProcessedEvent or (input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right) then
                                         v["Keybind"] = input2.KeyCode
                                         --v["CallBack"](input2.KeyCode)
                                         v["ChangeTime"] = tick()
@@ -724,13 +724,14 @@ function Library:NewCategory(cat_name)
             ["Type"] = "Keybind",
             ["Drawings"] = CreateTextBox(op_name, RGB(10, 10, 10), 0.75, RGB(255, 255, 255), _G["Theme"]["Text_Size"], v2(_G["Theme"]["UI_Position"].X+10, new_y), {Type = "Keybind", Keybind = default}),
             ["Keybind"] = default,
-            ["CallBack"] = CallBack
+            ["CallBack"] = CallBack,
+            ["ChangeTime"] = 0
         }
         local c
-        c = UIS.InputBegan:Connect(function(input, processed)
+        c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
             if DESTROY_GUI then
                 c:Disconnect()
-            elseif not processed or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
+            elseif not gameProcessedEvent or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == _G["Layout"][val]["Keybind"] and (tick() - _G["Layout"][val]["ChangeTime"]) > 0.01 then
                     CallBack()
                 end
