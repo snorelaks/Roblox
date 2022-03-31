@@ -252,7 +252,6 @@ end
 
 function Library:PlaceUI()
     local current_y = _G["Theme"]["UI_Position"].Y
-    print(current_y)
     for i = 1, #_G["Layout"] do
         local v = _G["Layout"][i]
         if active then
@@ -480,6 +479,7 @@ c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
                 local goingup = false
                 while holdingButtons[input.KeyCode][1] and holdingButtons[input.KeyCode][2] == currentTime do
                     selected = clamp(selected - 1, 1, n-1)
+                    print(selected)
                     if selected == 1 or _G["Layout"][selected].Hide then
                         local found = false
                         for indexnum = #_G["Layout"], 1, -1 do
@@ -495,7 +495,6 @@ c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
                     else
                         if _G["Layout"][selected].Type == "Category" or _G["Layout"][selected].Hide == true then
                             for indexnum = selected, 1, -1 do
-                                print(_G["Layout"][indexnum].Hide)
                                 if _G["Layout"][indexnum].Type ~= "Category" and _G["Layout"][indexnum].Hide == false then
                                     selected = indexnum
                                     break
