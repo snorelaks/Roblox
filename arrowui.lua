@@ -716,7 +716,7 @@ c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
                                     elseif input2.UserInputType == Enum.UserInputType.Keyboard then
                                         if not gameProcessedEvent or (input2.KeyCode ~= Enum.KeyCode.Up and input2.KeyCode ~= Enum.KeyCode.Down and input2.KeyCode ~= Enum.KeyCode.Left and input2.KeyCode ~= Enum.KeyCode.Right) then
                                             v["Keybind"] = input2.KeyCode
-                                            --v["CallBack"](input2.KeyCode)
+                                            v["CallBack"](input2.KeyCode)
                                             v["ChangeTime"] = tick()
                                             Library:Reset()
                                             c:Disconnect()
