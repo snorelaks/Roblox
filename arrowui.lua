@@ -903,7 +903,7 @@ function Library:NewCategory(info)
             elseif not gameProcessedEvent or (input.KeyCode == Enum.KeyCode.Up or input.KeyCode == Enum.KeyCode.Down or input.KeyCode == Enum.KeyCode.Left or input.KeyCode == Enum.KeyCode.Right) then
                 if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == _G["Layout"][val]["Keybind"] and (tick() - _G["Layout"][val]["ChangeTime"]) > 0.01 then
                     local cb = typeof(info.callback) == "function" and info.callback or function() end
-                    cb(input)
+                    cb()
                 end
             end
         end)
