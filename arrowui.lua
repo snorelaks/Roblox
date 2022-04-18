@@ -593,7 +593,7 @@ c = UIS.InputBegan:Connect(function(input, gameProcessedEvent)
                 local goingup = false
                 while holdingButtons[input.KeyCode][1] and holdingButtons[input.KeyCode][2] == currentTime do
                     selected = clamp(selected + 1, 1, n+1)
-                    if selected == n+1 or _G["Layout"][selected].Hide then
+                    if selected == n+1 then
                         local found = false
                         for indexnum = 1, #_G["Layout"] do
                             if _G["Layout"][indexnum].Type ~= "Category" and _G["Layout"][indexnum].Hide == false then
